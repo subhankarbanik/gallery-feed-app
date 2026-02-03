@@ -8,9 +8,13 @@ type Params = {
   };
 };
 
-export async function GET(_req: Request, { params }: Params) {
-  const id = Number(params.id);
-  if (!Number.isFinite(id)) {
+export async function GET( _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;  
+  const galleryId = Number(id);
+
+  if (!Number.isFinite(galleryId)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });
   }
 

@@ -3,40 +3,61 @@ import Link from "next/link";
 import type { GalleryDetail, GalleryCard } from "@/lib/types";
 
 async function getGallery(id: string): Promise<GalleryDetail | null> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/api/galleries/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
+  if (!id) return null;
+  
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const res = await fetch(`${baseUrl}/api/galleries/${id}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) return null;
   return (await res.json()) as GalleryDetail;
 }
 
 async function getSimilar(id: string): Promise<GalleryCard[]> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/api/galleries/${id}/similar`,
-    {
-      cache: "no-store",
-    }
-  );
+  if (!id) return [];
+  
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const res = await fetch(`${baseUrl}/api/galleries/${id}/similar`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) return [];
   const data = (await res.json()) as { items: GalleryCard[] };
+  console.log('Subhankar Data', data);
   return data.items;
 }
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function GalleryDetailPage({ params }: Props) {
+  const { id } = await params;
+  
+  if (!id) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
+        <div className="max-w-md text-center">
+          <p className="text-lg font-semibold text-neutral-900">
+            Invalid gallery ID
+          </p>
+          <Link
+            href="/"
+            className="mt-6 inline-flex rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+          >
+            Back to gallery
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const [gallery, similar] = await Promise.all([
-    getGallery(params.id),
-    getSimilar(params.id),
+    getGallery(id),
+    getSimilar(id),
   ]);
 
   if (!gallery) {
@@ -57,6 +78,7 @@ export default async function GalleryDetailPage({ params }: Props) {
           </Link>
         </div>
       </div>
+      
     );
   }
 
@@ -83,14 +105,20 @@ export default async function GalleryDetailPage({ params }: Props) {
 
         <section className="overflow-hidden rounded-3xl bg-gradient-to-b from-neutral-100 to-neutral-200">
           <div className="relative aspect-[3/4] w-full sm:aspect-[16/10]">
-            <Image
+            {/* <Image
               src={gallery.media_url}
               alt={gallery.profile_name}
               fill
               priority
               sizes="(max-width: 768px) 100vw, 768px"
               className="h-full w-full object-cover"
-            />
+              unoptimized={true}
+            /> */}
+          <img
+            src={gallery.media_url}
+            alt={gallery.profile_name}
+            className="h-full w-full object-cover"
+          />
           </div>
         </section>
 
@@ -98,12 +126,19 @@ export default async function GalleryDetailPage({ params }: Props) {
           <div className="flex items-center gap-3">
             <div className="relative h-12 w-12 overflow-hidden rounded-full bg-neutral-200">
               {gallery.profile_picture && (
-                <Image
-                  src={gallery.profile_picture}
-                  alt={gallery.profile_name}
-                  fill
-                  sizes="48px"
-                  className="h-full w-full object-cover"
+                // <Image
+                //   src={gallery.profile_picture}
+                //   alt={gallery.profile_name}
+                //   fill
+                //   sizes="48px"
+                //   className="h-full w-full object-fit"
+                //   unoptimized={true}
+                // />
+              
+                <img
+                   src={gallery.profile_picture}
+                   alt={gallery.profile_name}
+                   className="h-full w-full object-cover"
                 />
               )}
             </div>
@@ -144,14 +179,21 @@ export default async function GalleryDetailPage({ params }: Props) {
                   className="group relative block overflow-hidden rounded-xl bg-neutral-200"
                 >
                   <div className="relative h-full w-full">
-                    <Image
+                    {/* <Image
                       src={item.media_url}
                       alt={item.profile_name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+                      unoptimized={true}
+                    /> */}
+                       <img
+                         src={item.media_url}
+                         alt={item.profile_name}
+                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                       />
+
                   </div>
                 </Link>
               ))}
@@ -160,6 +202,7 @@ export default async function GalleryDetailPage({ params }: Props) {
         )}
       </main>
     </div>
+    
   );
 }
 

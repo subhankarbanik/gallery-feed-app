@@ -5,14 +5,20 @@ import type { GalleryCard } from "@/lib/types";
 const DEFAULT_LIMIT = 20;
 
 export async function GET(req: NextRequest) {
-  const searchParams = req.nextUrl.searchParams;
-  const tag = searchParams.get("tag");
-  const page = Number(searchParams.get("page") ?? "1");
-  const limit = Number(searchParams.get("limit") ?? DEFAULT_LIMIT);
+  const { searchParams } = req.nextUrl;
+
+  const tag = searchParams.get("tag") ?? "all";
+  const pageRaw = searchParams.get("page");
+  const limitRaw = searchParams.get("limit");
+
+  const page = Number(pageRaw);
+  const limit = Number(limitRaw);
 
   const safePage = Number.isFinite(page) && page > 0 ? page : 1;
   const safeLimit =
-    Number.isFinite(limit) && limit > 0 && limit <= 50 ? limit : DEFAULT_LIMIT;
+    Number.isFinite(limit) && limit > 0 && limit <= 50
+      ? limit
+      : DEFAULT_LIMIT;
 
   const offset = (safePage - 1) * safeLimit;
 

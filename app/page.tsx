@@ -99,7 +99,6 @@ export default function GalleryFeedPage() {
         observerRef.current.disconnect();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMore, isInitialLoading, isLoadingMore, selectedTag]);
 
   const loadNextPage = async () => {
@@ -207,14 +206,16 @@ export default function GalleryFeedPage() {
                   className="group relative block overflow-hidden rounded-xl bg-neutral-200"
                 >
                   <div className="relative h-full w-full">
-                    <Image
+                    {/* <Image
                       src={item.media_url}
                       alt={item.profile_name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+                      unoptimized={true}
+                    /> */}
+                    <img src={item.media_url} alt="" className="w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
                   </div>
                 </Link>
               ))}

@@ -145,11 +145,12 @@ export default function GalleryFeedPage() {
   return (
     <div className="min-h-screen bg-neutral-50">
       <main className="mx-auto flex max-w-6xl flex-col gap-4 px-4 pb-8 pt-6 sm:px-6 lg:px-8">
-        <header className="space-y-4">
+      <header className="sticky top-0 z-30 bg-neutral-50 space-y-4 pb-2">
           <h1 className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
             Gallery
           </h1>
-          <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="sticky top-0 z-20 flex gap-2 overflow-x-auto bg-neutral-50 pb-2 pt-2">
+
             {[allTagChip, ...tags].map((tag) => {
               const isActive =
                 (tag.tag === TAG_ALL && selectedTag === TAG_ALL) ||
@@ -183,7 +184,7 @@ export default function GalleryFeedPage() {
             {Array.from({ length: 10 }).map((_, index) => (
               <div
                 key={index}
-                className="aspect-[3/4] animate-pulse rounded-xl bg-neutral-200"
+                className="aspect-[3/4] animate-pulse bg-neutral-200"
               />
             ))}
           </div>
@@ -198,27 +199,42 @@ export default function GalleryFeedPage() {
           </div>
         ) : (
           <>
-            <section className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5">
+            {/* <section className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5"> */}
+            <section className="columns-2 gap-2 sm:columns-3 md:columns-4 lg:columns-5">
               {galleries.map((item) => (
+                // <Link
+                //   key={item.id}
+                //   href={`/gallery/${item.id}`}
+                //   className="mb-2 block break-inside-avoid overflow-hidden bg-neutral-200 group"
+                // >
+                //   <div className="relative h-full w-full">
+                //     <Image
+                //       src={item.media_url}
+                //       alt={item.profile_name}
+                //       fill
+                //       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                //       loading="lazy"
+                //       className="-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                //       unoptimized={true}
+                //       height={300}
+                //       width={200}
+                //     />
+                //     {/* <img src={item.media_url} alt="" className="w-full object-cover transition-transform duration-300 group-hover:scale-105"/> */}
+                //   </div>
+                // </Link>
                 <Link
                   key={item.id}
                   href={`/gallery/${item.id}`}
-                  className="group relative block overflow-hidden rounded-xl bg-neutral-200"
+                  className="mb-2 block break-inside-avoid overflow-hidden bg-neutral-200 group"
                 >
-                  <div className="relative h-full w-full">
-                    {/* <Image
-                      src={item.media_url}
-                      alt={item.profile_name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      unoptimized={true}
-                    /> */}
-                    <img src={item.media_url} alt="" className="w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
-                  </div>
+                  <img
+                    src={item.media_url}
+                    alt={item.profile_name}
+                    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
                 </Link>
-              ))}
+                ))}
             </section>
 
             <section className="mt-6 text-sm text-neutral-500">

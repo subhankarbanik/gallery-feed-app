@@ -24,7 +24,7 @@ async function getSimilar(id: string): Promise<GalleryCard[]> {
 
   if (!res.ok) return [];
   const data = (await res.json()) as { items: GalleryCard[] };
-  console.log('Subhankar Data', data);
+  console.log('Subhankar Data');
   return data.items;
 }
 
@@ -46,7 +46,7 @@ export default async function GalleryDetailPage({ params }: Props) {
           </p>
           <Link
             href="/"
-            className="mt-6 inline-flex rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+            className="mt-6 inline-flex  bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
           >
             Back to gallery
           </Link>
@@ -99,13 +99,13 @@ export default async function GalleryDetailPage({ params }: Props) {
             className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-neutral-200"
           >
             <span className="sr-only">Back</span>
-            <span className="text-lg text-neutral-700">&larr;</span>
+            <span className="text-lg text-neutral-700 mb-1">←</span>
           </Link>
         </header>
 
-        <section className="overflow-hidden rounded-3xl bg-gradient-to-b from-neutral-100 to-neutral-200">
+        <section className="overflow-hidden  bg-gradient-to-b from-neutral-100 to-neutral-200">
           <div className="relative aspect-[3/4] w-full sm:aspect-[16/10]">
-            {/* <Image
+            <Image
               src={gallery.media_url}
               alt={gallery.profile_name}
               fill
@@ -113,33 +113,33 @@ export default async function GalleryDetailPage({ params }: Props) {
               sizes="(max-width: 768px) 100vw, 768px"
               className="h-full w-full object-cover"
               unoptimized={true}
-            /> */}
-          <img
+            />
+          {/* <img
             src={gallery.media_url}
             alt={gallery.profile_name}
             className="h-full w-full object-cover"
-          />
+          /> */}
           </div>
         </section>
 
-        <section className="mt-6 flex flex-col gap-4 rounded-3xl bg-white px-4 py-4 shadow-sm ring-1 ring-neutral-100 sm:flex-row sm:items-center sm:px-6 sm:py-5">
+        <section className="mt-6 flex flex-col gap-4 bg-[#FAFAFA] px-4 py-4  ring-1 ring-neutral-100 sm:flex-row sm:items-center sm:px-6 sm:py-5">
           <div className="flex items-center gap-3">
-            <div className="relative h-12 w-12 overflow-hidden rounded-full bg-neutral-200">
+            <div className="relative h-12 w-12 overflow-hidden bg-neutral-200 rounded-xl">
               {gallery.profile_picture && (
-                // <Image
-                //   src={gallery.profile_picture}
-                //   alt={gallery.profile_name}
-                //   fill
-                //   sizes="48px"
-                //   className="h-full w-full object-fit"
-                //   unoptimized={true}
-                // />
-              
-                <img
-                   src={gallery.profile_picture}
-                   alt={gallery.profile_name}
-                   className="h-full w-full object-cover"
+                <Image
+                  src={gallery.profile_picture}
+                  alt={gallery.profile_name}
+                  fill
+                  sizes="48px"
+                  className="h-full w-full object-fit"
+                  unoptimized={true}
                 />
+              
+                // <img
+                //    src={gallery.profile_picture}
+                //    alt={gallery.profile_name}
+                //    className="h-full w-full object-cover rounded-xl"
+                // />
               )}
             </div>
             <div>
@@ -156,7 +156,7 @@ export default async function GalleryDetailPage({ params }: Props) {
               {gallery.tags.map((tag) => (
                 <span
                   key={tag.id}
-                  className="rounded-full bg-neutral-100 px-3 py-1 text-neutral-700"
+                  className=" bg-neutral-100 px-3 py-1 text-neutral-700"
                 >
                   #{tag.tag_display_name}
                 </span>
@@ -176,7 +176,7 @@ export default async function GalleryDetailPage({ params }: Props) {
                 <Link
                   key={item.id}
                   href={`/gallery/${item.id}`}
-                  className="group relative block overflow-hidden rounded-xl bg-neutral-200"
+                  className="group relative block overflow-hidden bg-neutral-200"
                 >
                   <div className="relative h-full w-full">
                     {/* <Image
